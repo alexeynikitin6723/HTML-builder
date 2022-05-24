@@ -12,7 +12,11 @@ async function copyDir(src, dest) {
 		for (let file of files) {
 			const srcPath = path.join(src, file.name);
 			const destPath = path.join(dest, file.name);
-			await copyFile(srcPath, destPath);
+			if (file.isFile()) {
+				await copyFile(srcPath, destPath);
+			} else {
+				await copyDir(srcPath, destPath);
+			}
 		}
 	} catch (err) {
 		console.error(err);
